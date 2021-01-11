@@ -1,15 +1,15 @@
 ﻿<# 
     .SYNOPSIS 
-    PRTG Sensor script to monitor Veeam Agent by MTF Data AG (Tobias Meier)
+    PRTG Sensor script to monitor Veeam Agent by MTF Data AG (Tobias Meier, tobiasmeier78)
     THIS CODE IS MADE AVAILABLE AS IS, WITHOUT WARRANTY OF ANY KIND. THE ENTIRE
     RISK OF THE USE OR THE RESULTS FROM THE USE OF THIS CODE REMAINS WITH THE USER. 
     Version 1.0, 2021-01-08
-    Please send ideas, comments and suggestions to sd@mtfdata.ch
+    Please send ideas, comments and suggestions to https://github.com/mtfch/prtg-sensors
     .LINK 
-    https://www.mtfdata.ch/
+    https://www.mtf.ch/
     .DESCRIPTION 
     This script returns Xml for a custom PRTG sensor providing the following channels
-    - In/Out Success             | Total of inbound/outbound successfully delivered messages over the last X minutes
+     - Veeam Agent Status (status of the last backup (24hours ago))
     .NOTES 
     Requirements 
     - Windows Server 2012 R2  
@@ -17,8 +17,7 @@
     
     Revision History 
     -------------------------------------------------------------------------------- 
-    1.0 Initial community release 
-    
+    1.0 Initial community release
     .EXAMPLE 
     .\Get-VeeamAgentStatus.ps1
 #> 
@@ -50,6 +49,7 @@ function Get-EventLogEntries {
 #Search for event entry
 $BackupResult = Get-EventLogEntries
 
+#XML Output for PRTG, according to https://www.paessler.com/manuals/prtg/exe_script_advanced_sensor
 $Output = "<?xml version=""1.0"" encoding=""Windows-1252"" ?>`n"
 $Output += "<prtg>`n"
 if ( $BackupResult.Status -ne "Error" ) {
